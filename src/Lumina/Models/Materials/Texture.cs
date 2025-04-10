@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Lumina.Data.Files;
 using Lumina.Data.Parsing;
 
@@ -117,6 +117,7 @@ namespace Lumina.Models.Materials
                 TextureUsage.SamplerWaveletMap0 => Usage.Wave,
                 TextureUsage.SamplerWaveletMap1 => Usage.Wave,
                 TextureUsage.SamplerWhitecapMap => Usage.Whitecap,
+                TextureUsage.Water => Usage.Normal,
                 _ => throw new ArgumentOutOfRangeException( nameof( usage ), usage, null )
             };
         }
