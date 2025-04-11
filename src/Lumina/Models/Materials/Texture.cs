@@ -116,6 +116,7 @@ namespace Lumina.Models.Materials
                 TextureUsage.SamplerWaveMap => Usage.Wave,
                 TextureUsage.SamplerWaveletMap0 => Usage.Wave,
                 TextureUsage.SamplerWaveletMap1 => Usage.Wave,
+                TextureUsage.SamplerWaveletMap2 => Usage.Wave,
                 TextureUsage.SamplerWhitecapMap => Usage.Whitecap,
                 _ => throw new ArgumentOutOfRangeException( nameof( usage ), usage, null )
             };
