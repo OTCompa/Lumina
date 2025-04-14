@@ -43,5 +43,3 @@ jobs:
         release_name: Lumina ${{ github.ref }}
         draft: false
         prerelease: false
-    - name: publish nuget package
-      run: dotnet nuget push ./src/Lumina/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
