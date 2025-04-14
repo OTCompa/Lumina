@@ -23,7 +23,7 @@ jobs:
     - name: dotnet test
       run: dotnet test --configuration Release --nologo ./src/Lumina.sln
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Lumina-${{ matrix.os }}
         path: |
@@ -43,5 +43,3 @@ jobs:
         release_name: Lumina ${{ github.ref }}
         draft: false
         prerelease: false
-    - name: publish nuget package
-      run: dotnet nuget push ./src/Lumina/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
