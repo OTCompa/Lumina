@@ -203,7 +203,14 @@ namespace Lumina.Models.Materials
             {
                 TextureUsage raw = (TextureUsage) File.Samplers[ i ].SamplerId;
                 var texIndex = File.Samplers[ i ].TextureIndex;
-                var texOffset = File.TextureOffsets[ texIndex ].Offset;
+                ushort texOffset;
+                try
+                {
+                    texOffset = File.TextureOffsets[texIndex].Offset;
+                } catch (IndexOutOfRangeException)
+                {
+                    continue;
+                }
                 var texPath = StringOffsetToStringMap[ texOffset ];
                 Textures[ i ] = new Texture( this, raw, texPath );
             }
