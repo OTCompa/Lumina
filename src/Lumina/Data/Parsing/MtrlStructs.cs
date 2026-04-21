@@ -32,7 +32,8 @@ namespace Lumina.Data.Parsing
         SamplerWaveMap1 = 0xE5338C17,
         SamplerWaveletMap0 = 0x574E22D6,
         SamplerWaveletMap1 = 0x20491240,
-        SamplerWhitecapMap = 0x95E1F64D
+        SamplerWhitecapMap = 0x95E1F64D,
+        SamplerUnknownDiffuse = 0xD7837FCE
     }
 
     public struct MaterialFileHeader

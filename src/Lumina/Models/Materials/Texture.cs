@@ -55,7 +55,14 @@ namespace Lumina.Models.Materials
         {
             Parent = parent;
             TextureUsageRaw = raw;
-            TextureUsageSimple = GetUsage( raw );
+            try
+            {
+                TextureUsageSimple = GetUsage( texturePath, raw );
+            } catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine($"{e.Message} : {e.StackTrace}");
+                TextureUsageSimple = Usage.Diffuse;
+            }
             TexturePath = texturePath;
         }
         
@@ -93,7 +100,7 @@ namespace Lumina.Models.Materials
             return data.GetFile< TexFile >( TexturePath );
         }
 
-        private static Usage GetUsage(TextureUsage usage)
+        private static Usage GetUsage(string texturePath, TextureUsage usage)
         {
             return usage switch
             {
@@ -118,7 +125,8 @@ namespace Lumina.Models.Materials
                 TextureUsage.SamplerWaveletMap0 => Usage.Wave,
                 TextureUsage.SamplerWaveletMap1 => Usage.Wave,
                 TextureUsage.SamplerWhitecapMap => Usage.Whitecap,
-                _ => throw new ArgumentOutOfRangeException( nameof( usage ), usage, null )
+                TextureUsage.SamplerUnknownDiffuse => Usage.Diffuse,
+                _ => throw new ArgumentOutOfRangeException( nameof( usage ), usage, $"texture: {texturePath}" )
             };
         }
     }
