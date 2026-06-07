@@ -208,9 +208,9 @@ namespace Lumina.Models.Materials
 
         private void ReadTextures()
         {
-            Textures = new Texture[File.TextureOffsets.Length];
+            Textures = new Texture[File.Samplers.Length];
 
-            for( int i = 0; i < File.TextureOffsets.Length; i++ )
+            for( int i = 0; i < File.Samplers.Length; i++ )
             {
                 TextureUsage raw = (TextureUsage) File.Samplers[ i ].SamplerId;
                 var texIndex = File.Samplers[ i ].TextureIndex;
