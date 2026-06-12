@@ -214,8 +214,11 @@ namespace Lumina.Models.Materials
             {
                 TextureUsage raw = (TextureUsage) File.Samplers[ i ].SamplerId;
                 var texIndex = File.Samplers[ i ].TextureIndex;
+                if( texIndex >= File.TextureOffsets.Length )
+                    continue;
                 var texOffset = File.TextureOffsets[ texIndex ].Offset;
-                var texPath = StringOffsetToStringMap[ texOffset ];
+                if( !StringOffsetToStringMap.TryGetValue( texOffset, out var texPath ) )
+                    continue;
                 Textures[ i ] = new Texture( this, raw, texPath );
             }
         }
@@ -225,18 +228,14 @@ namespace Lumina.Models.Materials
             StringOffsetToStringMap = new Dictionary< int, string >();
             var br = new LuminaBinaryReader( File.Strings );
 
-            // They re-use offsets, so the number of offsets is not equal to the number of unique members
-            var uniqueTextureCount = File.TextureOffsets.Select( t => t.Offset ).Distinct().Count();
-            var uniqueUvColorSetCount = File.UvColorSets.Select( t => t.NameOffset ).Distinct().Count();
-            var uniqueColorOffsetCount = File.ColorSets.Select( t => t.NameOffset ).Distinct().Count();
-
-            // Add one for the shader package name at the end
-            var stringCount = uniqueTextureCount + uniqueUvColorSetCount + uniqueColorOffsetCount + 1;
-            for( int i = 0; i < stringCount; i++ )
+            // Read every null-terminated string in the table by position rather than counting expected
+            // entries — some material variants include extra strings (e.g. sampler names) that would
+            // shift all subsequent offsets and break lookups if we rely on a fixed count.
+            while( br.BaseStream.Position < br.BaseStream.Length )
             {
-                long startOffset = br.BaseStream.Position;
-                string tmp = br.ReadStringData();
-                StringOffsetToStringMap[ (int) startOffset ] = tmp;
+                var startOffset = (int) br.BaseStream.Position;
+                var str = br.ReadStringData();
+                StringOffsetToStringMap[ startOffset ] = str;
             }
 
             br.Dispose();
